@@ -53,7 +53,7 @@ like @racket[lambda], except that each @racket[arg-pat] can be an arbitrary @rac
               you have to use square brackets to specify an optional argument}
 
 It is very similar to @racket[match-lambda**], except that it doesn't support multiple clauses, and
-it allows optional arguments and keyword arguments.  
+it allows optional arguments, keyword arguments, and a rest argument.  
 
 As an example,
 @racketblock[(my-match-lambda ((list x y) (vector z))
