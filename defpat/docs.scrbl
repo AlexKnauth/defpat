@@ -22,7 +22,7 @@ arguments can be @racket[match] patterns.
          #:grammar ([head id
                           (head args)]
                     [args (code:line arg ...)
-                          (code:line arg ... . rest-id)]
+                          (code:line arg ... @#,racketparenfont{.} rest-id)]
                     [arg (code:line arg-pat)
                          (code:line [arg-pat default-expr])
                          (code:line keyword arg-pat)
