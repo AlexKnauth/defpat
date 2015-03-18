@@ -2,7 +2,8 @@
 
 @(require (for-label racket/base
                      racket/match
-                     defpat))
+                     defpat
+                     generic-bind))
 
 @title{defpat}
 
@@ -11,11 +12,14 @@ This module provides the forms @racket[defpat] and @racket[my-match-lambda].
 
 @racket[defpat] is a version of @racket[define] for functions where the
 arguments can be @racket[match] patterns.  
-@margin-note{see also @racket[define/match]}
+@margin-note{see also @racket[define/match] from @racketmodname[racket/match] and
+                      @racket[~define] from @racketmodname[generic-bind]}
 
 @racket[my-match-lambda] is a version of @racket[lambda] where (again) the
 arguments can be @racket[match] patterns.
-@margin-note{see also @racket[match-lambda], @racket[match-lambda*], and @racket[match-lambda**]}
+@margin-note{see also @racket[match-lambda], @racket[match-lambda*], and @racket[match-lambda**]
+                      from @racketmodname[racket/match], and
+                      @racket[~lambda] from @racketmodname[generic-bind]}
 }
 
 @defform[(defpat (head args) body ...+)
