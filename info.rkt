@@ -4,5 +4,5 @@
 
 (define deps '("base" "generic-bind"))
 
-(define build-deps '("rackunit" "scribble-lib"))
+(define build-deps '("rackunit" "scribble-lib" "racket-doc"))
 
