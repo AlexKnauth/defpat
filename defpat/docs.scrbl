@@ -22,15 +22,16 @@ arguments can be @racket[match] patterns.
                       @racket[~lambda] from @racketmodname[generic-bind]}
 }
 
-@defform[(defpat (head args) body ...+)
-         #:grammar ([head id
-                          (head args)]
-                    [args (code:line arg ...)
-                          (code:line arg ... @#,racketparenfont{.} rest-id)]
-                    [arg (code:line arg-pat)
-                         (code:line [arg-pat default-expr])
-                         (code:line keyword arg-pat)
-                         (code:line keyword [arg-pat default-expr])])]{
+@defform*[[(defpat id expr)
+           (defpat (head args) body ...+)]
+          #:grammar ([head id
+                           (head args)]
+                     [args (code:line arg ...)
+                           (code:line arg ... @#,racketparenfont{.} rest-id)]
+                     [arg (code:line arg-pat)
+                          (code:line [arg-pat default-expr])
+                          (code:line keyword arg-pat)
+                          (code:line keyword [arg-pat default-expr])])]{
 like @racket[define], except that each @racket[arg-pat] can be an arbitrary @racket[match] pattern.
 
 The @racket[arg-pat] can't start with a @litchar{[} though, otherwise it couldn't tell between
