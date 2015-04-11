@@ -1,3 +1,4 @@
 #lang info
 
-(define scribblings '(["docs.scrbl" ()]))
+(define scribblings '(["docs/defpat.scrbl" ()]))
+
