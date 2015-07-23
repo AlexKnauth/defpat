@@ -17,9 +17,10 @@
       #:attr n (length (syntax->list #'(pat ...)))]
     [pattern [[fst-pat:expr ... . rst:id] body ...+]
       #:with [pat ...] #'[fst-pat ... rst]
-      #:with [id:id ...] (generate-temporaries #'(pat ...))
-      #:with args #'(id ... . rst)
-      #:with n (arity-at-least (length (syntax->list #'(fst-pat ...))))])
+      #:with [fst-id:id ...] (generate-temporaries #'(fst-pat ...))
+      #:with [id:id ...] #'[fst-id ... rst]
+      #:with args #'(fst-id ... . rst)
+      #:attr n (arity-at-least (length (syntax->list #'(fst-pat ...))))])
   (define (clause-n clause)
     (syntax-parse clause
       [:match*-clause (attribute n)]))
