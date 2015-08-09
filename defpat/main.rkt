@@ -3,7 +3,10 @@
 provide defpat
         my-match-lambda
 
-require $ for-syntax racket/base
+require
+        only-in generic-bind ~define
+        only-in (prefix-in ~ generic-bind) ~$
+        for-syntax   racket/base
                      racket/syntax
                      syntax/parse
                      syntax/stx
@@ -36,11 +39,11 @@ begin-for-syntax
   ;;   > (parse-arg-pats #'())
   ;;   (values #'() (list))
   ;;   > (parse-arg-pats #'rest-id)
-  ;;   (values #'%& (list #'(match-define rest-id %&)))
+  ;;   (values #'%& (list #'(~define (~$ rest-id) %&)))
   ;;   > (parse-arg-pats #'(arg-id))
-  ;;   (values #'(%1) (list #'(match-define arg-id %1)))
+  ;;   (values #'(%1) (list #'(~define (~$ arg-id) %1)))
   ;;   > (parse-arg-pats #'(arg-id1 arg-id2))
-  ;;   (values #'(%1 %2) (list #'(match-define arg-id1 %1) #'(match-define arg-id2)))
+  ;;   (values #'(%1 %2) (list #'(~define (~$ arg-id1) %1) #'(~define (~$ arg-id2) %2)))
   define-syntax-class arg+default
     [pattern (~and stx [arg default])
              #:when (equal? #\[ (syntax-property #'stx 'paren-shape))]
@@ -48,7 +51,7 @@ begin-for-syntax
     syntax-parse stx
       [() (values #'() (list))]
       [rest-id:id (with-syntax ([%& (datum->syntax stx '%& stx stx)])
-                    (values #'%& (list #'(match-define rest-id %&))))]
+                    (values #'%& (list #'(~define (~$ rest-id) %&))))]
       [(arg:expr . rst) (define-values (arg.arg arg.def)
                           (parse-arg-pat #'arg #:i i))
                         (define-values (rst.args rst.defs)
@@ -73,7 +76,7 @@ begin-for-syntax
                                  [#,a+d.arg.arg a+d.default])
                                a+d.arg.def)]
       [arg-pat (with-syntax ([%i (datum->syntax stx (string->symbol (format "%~a" i)) stx stx)])
-                 (values #'%i #'(match-define arg-pat %i)))]
+                 (values #'%i #'(~define (~$ arg-pat) %i)))]
 
 
 
