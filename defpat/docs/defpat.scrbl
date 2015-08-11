@@ -2,12 +2,12 @@
 
 @(require (for-label racket/base
                      racket/match
-                     defpat
+                     defpat/defpat
                      generic-bind))
 
 @title{defpat}
 
-@defmodule[defpat]{
+@defmodule[defpat/defpat]{
 This module provides the forms @racket[defpat] and @racket[my-match-lambda].
 
 @racket[defpat] is a version of @racket[define] for functions where the
