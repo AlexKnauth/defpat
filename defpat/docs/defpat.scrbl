@@ -8,6 +8,8 @@
 
 @title{defpat}
 
+source code: @url{https://github.com/AlexKnauth/defpat}
+
 @defmodule[defpat/defpat]{
 This module provides the forms @racket[defpat] and @racket[pat-lambda].
 
