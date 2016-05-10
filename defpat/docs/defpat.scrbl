@@ -9,14 +9,14 @@
 @title{defpat}
 
 @defmodule[defpat/defpat]{
-This module provides the forms @racket[defpat] and @racket[my-match-lambda].
+This module provides the forms @racket[defpat] and @racket[pat-lambda].
 
 @racket[defpat] is a version of @racket[define] for functions where the
 arguments can be @racket[match] patterns.  
 @margin-note{see also @racket[define/match] from @racketmodname[racket/match] and
                       @racket[~define] from @racketmodname[generic-bind]}
 
-@racket[my-match-lambda] is a version of @racket[lambda] where (again) the
+@racket[pat-lambda] is a version of @racket[lambda] where (again) the
 arguments can be @racket[match] patterns.
 @margin-note{see also @racket[match-lambda], @racket[match-lambda*], and @racket[match-lambda**]
                       from @racketmodname[racket/match], and
@@ -61,10 +61,10 @@ square brackets are used to specify optional arguments:
 
 @racketblock[(defpat (head . args) body ...)]
 expands to
-@racketblock[(defpat head (my-match-lambda args body ...))]
+@racketblock[(defpat head (pat-lambda args body ...))]
 }
 
-@defform[(my-match-lambda kw-formals body ...+)
+@defform[(pat-lambda kw-formals body ...+)
          #:grammar ([kw-formals (arg ...)
                                 (arg ...+ . rest-id)
                                 rest-id]
@@ -80,7 +80,7 @@ It is very similar to @racket[match-lambda**], except that it doesn't support mu
 it allows optional arguments, keyword arguments, and a rest argument.  
 
 As an example,
-@racketblock[(my-match-lambda ((list x y) (vector z))
+@racketblock[(pat-lambda ((list x y) (vector z))
                body)]
 expands to
 @racketblock[(lambda (%1 %2)
@@ -88,7 +88,7 @@ expands to
                (match-define (vector z) %2)
                body)]
 and for keyword-arguments,
-@racketblock[(my-match-lambda (#:kw (list x y))
+@racketblock[(pat-lambda (#:kw (list x y))
                body)]
 expands to
 @racketblock[(lambda (#:kw %#:kw)

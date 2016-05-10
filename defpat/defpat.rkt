@@ -1,7 +1,9 @@
 #lang sweet-exp racket
 
 provide defpat
-        my-match-lambda
+        pat-lambda
+        rename-out
+          pat-lambda my-match-lambda
 
 require
         only-in generic-bind ~define
@@ -21,7 +23,7 @@ define-syntax defpat
     syntax-parse stx
       [(defpat (f:expr . arg-pats) body:expr ...+)
        #'(defpat f
-           (my-match-lambda arg-pats
+           (pat-lambda arg-pats
              body ...))]
       [(defpat id:id expr:expr)
        #'(define id expr)]
@@ -31,7 +33,7 @@ begin-for-syntax
   define-syntax kw make-rename-transformer(#'keyword)
   ;; parse-arg-pats : Stx [#:i Natural] -> (Values Stx (Listof Stx))
   ;; interp:
-  ;;   given the arg-pats from my-match-lambda, produce two values
+  ;;   given the arg-pats from pat-lambda, produce two values
   ;;   the first value is the kw-formals for use in lambda,
   ;;   and the second value is a list of definitions to bind the
   ;;   pattern variables in the arg-pats
@@ -80,10 +82,10 @@ begin-for-syntax
 
 
 
-define-syntax my-match-lambda
+define-syntax pat-lambda
   lambda (stx)
     syntax-parse stx
-      [(my-match-lambda arg-pats body:expr ...+)
+      [(pat-lambda arg-pats body:expr ...+)
        (define-values (args defs)
          (parse-arg-pats #'arg-pats))
        (with-syntax ([args args] [(def ...) defs])
