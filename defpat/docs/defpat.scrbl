@@ -1,6 +1,7 @@
 #lang scribble/manual
 
-@(require (for-label racket/base
+@(require scribble-code-examples
+          (for-label racket/base
                      racket/match
                      defpat/defpat
                      generic-bind))
@@ -32,13 +33,31 @@ arguments can be @racket[match] patterns.
                           (code:line [arg-pat default-expr])
                           (code:line keyword arg-pat)
                           (code:line keyword [arg-pat default-expr])])]{
-like @racket[define], except that each @racket[arg-pat] can be an arbitrary @racket[match] pattern.
+like @racket[define], except that each @racket[arg-pat] can be an
+arbitrary @racket[match] pattern.
 
-The @racket[arg-pat] can't start with a @litchar{[} though, otherwise it couldn't tell between
-@racket[arg-pat] and @racket[[arg-pat default-expr]].
+@code-examples[#:lang "racket/base" #:context #'here]{
+(require defpat/defpat)
+(defpat (distance (list x1 y1) (list x2 y2))
+  (sqrt (+ (* (- x2 x1) (- x2 x1))
+           (* (- y2 y1) (- y2 y1)))))
+(distance (list 0 0) (list 3 4))
+(distance (list 0 3) (list 4 0))
+}
 
-Also, you have to use square brackets to specify an optional argument (unlike @racket[define] and
-@racket[lambda]).
+The @racket[arg-pat] can't start with a @litchar{[} though, because
+square brackets are used to specify optional arguments:
+
+@code-examples[#:lang "racket/base" #:context #'here]{
+(require defpat/defpat)
+(defpat (distance (list x1 y1) [(list x2 y2) (list 0 0)])
+  ; if the second point is not specified, it computes the
+  ; distance to the origin
+  (sqrt (+ (* (- x2 x1) (- x2 x1))
+           (* (- y2 y1) (- y2 y1)))))
+(distance (list 0 3) (list 4 0))
+(distance (list 3 4))
+}
 
 @racketblock[(defpat (head . args) body ...)]
 expands to
