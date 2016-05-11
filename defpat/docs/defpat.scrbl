@@ -52,9 +52,9 @@ square brackets are used to specify optional arguments:
 
 @code-examples[#:lang "racket/base" #:context #'here]{
 (require defpat/defpat)
+;; If the second point is not specified, it computes the
+;; distance to the origin.
 (defpat (distance (list x1 y1) [(list x2 y2) (list 0 0)])
-  ; if the second point is not specified, it computes the
-  ; distance to the origin
   (sqrt (+ (* (- x2 x1) (- x2 x1))
            (* (- y2 y1) (- y2 y1)))))
 (distance (list 0 3) (list 4 0))
