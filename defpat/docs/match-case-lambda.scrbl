@@ -11,7 +11,7 @@
 
 @defform[(match*-case-lambda clause ...)
          #:grammar ([clause [args body ...+]
-                            [args (=> id) body]
+                            [args (=> id) body ...+]
                             [args #:when cond-expr body ...+]]
                     [args [arg-pat ...]
                           rest-id
@@ -23,7 +23,7 @@ As an example,
 @racketblock[(match*-case-lambda
                [[(list x y) (vector z)]
                 body])]
-expands to
+is equivalent to
 @racketblock[(case-lambda
                [(tmp1 tmp2)
                 (match* [tmp1 tmp2]
