@@ -1,8 +1,3 @@
-#lang sweet-exp racket/base
-provide
-      all-from-out
-        "defpat.rkt"
-        "match-case-lambda.rkt"
-require
-        "defpat.rkt"
-        "match-case-lambda.rkt"
+#lang sweet-exp reprovide
+"defpat.rkt"
+"match-case-lambda.rkt"
