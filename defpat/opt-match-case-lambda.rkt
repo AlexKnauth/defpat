@@ -91,4 +91,24 @@
     (check-equal? (f 1 2) (list 'first-case 1 2))
     (check-equal? (f 1 2 3) (list 'second-case 1 2 (list 3)))
     (check-equal? (f 1 2 3 4) (list 'second-case 1 2 (list 3 4))))
+  (let ([f (match*-case-lambda/opt [((list a)) a])])
+    (check-equal? (f (list 1)) 1)
+    (check-equal? (f (list 2)) 2))
+  (let ([f (match*-case-lambda/opt [((list a)) a]
+                                   [((vector a)) a])])
+    (check-equal? (f (list 1)) 1)
+    (check-equal? (f (vector 1)) 1))
+  (let ([f (match*-case-lambda/opt [([(list a) (list 5)]) a])])
+    (check-equal? (f) 5)
+    (check-equal? (f (list 1)) 1))
+  (let ([f (match*-case-lambda/opt [((list a) [(list b) (list 5)]) (list a b)]
+                                   [(a) (list a)]
+                                   [(a (vector b)) (list a b)]
+                                   [(a b) (list a b)])])
+    (check-equal? (f 0) (list 0))
+    (check-equal? (f (list 0)) (list 0 5))
+    (check-equal? (f (list 0) (list 1)) (list 0 1))
+    (check-equal? (f (list 0) 1) (list (list 0) 1))
+    (check-equal? (f 0 (vector 1)) (list 0 1))
+    (check-equal? (f 0 (list 1)) (list 0 (list 1))))
   )
