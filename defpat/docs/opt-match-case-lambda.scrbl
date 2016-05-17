@@ -2,6 +2,7 @@
 
 @(require (for-label racket/base
                      defpat/opt-match-case-lambda
+                     defpat/match-case-lambda
                      ))
 
 @title{opt-match-case-lambda}
