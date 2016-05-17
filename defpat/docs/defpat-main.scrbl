@@ -11,4 +11,5 @@
 @include-section["defpat.scrbl"]
 @include-section["match-case-lambda.scrbl"]
 @include-section["opt-case-lambda.scrbl"]
+@include-section["opt-match-case-lambda.scrbl"]
 
