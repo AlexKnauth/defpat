@@ -6,6 +6,8 @@
 
 (require racket/local
          defpat/defpat
+         defpat/match-case-lambda
+         unstable/match
          (for-syntax racket/base
                      racket/list
                      racket/syntax
@@ -39,7 +41,10 @@
              #:with [norm ...]
              (for/list ([i (in-range (add1 (length (stx->list #'[tmp-opt-arg ...]))))])
                (define/syntax-parse [tmp-opt-arg* ...] (take (syntax->list #'[tmp-opt-arg ...]) i))
-               #'[(tmp-arg ... tmp-opt-arg* ...) (tmp-f tmp-arg ... tmp-opt-arg* ...)])]
+               (define/syntax-parse [opt-arg-pat* ...] (take (syntax->list #'[opt-arg.pat ...]) i))
+               #'[(tmp-arg ... tmp-opt-arg* ...)
+                  #:when (match*? [tmp-arg ... tmp-opt-arg* ...] [arg.pat ... opt-arg-pat* ...])
+                  (tmp-f tmp-arg ... tmp-opt-arg* ...)])]
     [pattern [(arg:pat ... opt-arg:opt ... . rest:id) body:expr ...+]
              #:with tmp-f:id (generate-temporary)
              #:with [tmp-arg:id ...] (generate-temporaries #'[arg ... ])
@@ -49,10 +54,15 @@
              #:with [norm ...]
              (cons
               #'[(tmp-arg ... tmp-opt-arg ... . tmp-rest)
+                 #:when (match*? [tmp-arg ... tmp-opt-arg ... tmp-rest]
+                                 [arg.pat ... opt-arg.pat ... rest])
                  (apply tmp-f tmp-arg ... tmp-opt-arg ... tmp-rest)]
               (for/list ([i (in-range (length (stx->list #'[tmp-opt-arg ...])))])
                 (define/syntax-parse [tmp-opt-arg* ...] (take (syntax->list #'[tmp-opt-arg ...]) i))
-                #'[(tmp-arg ... tmp-opt-arg* ...) (tmp-f tmp-arg ... tmp-opt-arg* ...)]))]
+                (define/syntax-parse [opt-arg-pat* ...] (take (syntax->list #'[opt-arg.pat ...]) i))
+               #'[(tmp-arg ... tmp-opt-arg* ...)
+                  #:when (match*? [tmp-arg ... tmp-opt-arg* ...] [arg.pat ... opt-arg-pat* ...])
+                  (tmp-f tmp-arg ... tmp-opt-arg* ...)]))]
     ))
 
 (define-syntax match*-case-lambda/opt
@@ -60,7 +70,7 @@
     (syntax-parse stx
       [(match*-case-lambda/opt clause:opt-case-lambda-clause ...)
        #'(local [clause.extra-def ... ...]
-           (case-lambda clause.norm ... ...))])))
+           (match*-case-lambda clause.norm ... ...))])))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
