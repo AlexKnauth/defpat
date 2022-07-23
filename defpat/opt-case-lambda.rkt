@@ -62,6 +62,14 @@
                             [(a [b 5]) (list 'second-case a b)])])
     (check-equal? (f 1) (list 'first-case 1))
     (check-equal? (f 1 2) (list 'second-case 1 2)))
+
+  (let ([optional-case-no-backsies
+         (case-lambda/opt
+          [(a) (list 'a a)]
+          [([b #f]) (list 'b b)])])
+    (check-equal? (optional-case-no-backsies 1) '(a 1))
+    (check-equal? (optional-case-no-backsies) '(b #f)))
+
   (let ([f (case-lambda/opt [(a b) (list 'first-case a b)]
                             [(a [b 5]) (list 'second-case a b)])])
     (check-equal? (f 1) (list 'second-case 1 5))
