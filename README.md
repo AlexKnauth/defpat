@@ -1,4 +1,4 @@
-defpat [![Build Status](https://travis-ci.org/AlexKnauth/defpat.png?branch=master)](https://travis-ci.org/AlexKnauth/defpat)
+defpat
 ======
 
 a version of define for defining functions with match-patterns as arguments
